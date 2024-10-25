@@ -1,16 +1,28 @@
-# PUCIT Shell Version 01
-## Description
-PUCIT Shell is a simple command-line shell program developed for educational purposes. It serves as an interface for users to execute system commands and manage processes in a Unix-like environment. The shell supports basic functionalities, allowing users to interact with the operating system through command input.
+# MyShell
 
-## Features
-### Custom Prompt:
-              Displays a user-friendly prompt (PUCITshell:-) which can be customized to include additional information such as the machine name, username, or current working directory using getcwd().
+## Code Status
 
-### Command Execution:
-              Accepts a single line of input from the user, which can include commands, options, and arguments. The shell parses this input into tokens, forks a child process, and executes the command using the exec family of functions.
+- **Current Version**: 1.0.0
+- **Status**: Stable
+- **Bugs Found**:
+  - Occasionally, the shell may not handle certain edge cases with input redirection properly, leading to unexpected behavior.
+  - The `cd` command does not support relative paths correctly in some scenarios.
+  - Error messages for unsupported commands could be more descriptive.
 
-### Process Management: 
-              The parent process waits for the child process to complete before displaying the prompt again, ensuring orderly command execution.
+## Features Implemented
 
-### Exit Functionality: 
-               Users can exit the shell program gracefully by pressing <CTRL+D>, which terminates the shell session
+- **Basic Command Execution**: Execute standard shell commands such as `ls`, `cat`, `echo`, and `pwd`.
+- **Input/Output Redirection**: Redirect output to files using `>` and read input from files using `<`.
+- **Piping**: Connect multiple commands using pipes (`|`).
+- **Change Directory**: Navigate between directories using the `cd` command.
+- **Clear Screen**: Clear the terminal screen with the `clear` command.
+- **Environment Variable Access**: Use environment variables in commands (e.g., `$HOME`).
+- **Custom Error Handling**: Informative error messages for invalid commands and file operations.
+
+### Additional Features
+
+- **Command History**: Users can view and reuse previous commands by pressing the up and down arrow keys.
+- **Tab Completion**: Basic tab completion for file names and commands.
+- **Support for Background Processes**: Run commands in the background using `&`.
+
+.
