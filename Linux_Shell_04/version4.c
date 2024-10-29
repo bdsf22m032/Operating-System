@@ -2,80 +2,95 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <signal.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
-#define MAX_CMD_LEN 1024
-#define MAX_ARGS 100
+#define HISTORY_FILE ".simple_shell_history"
+#define MAX_HISTORY_SIZE 10
 
-void sigchld_handler(int signo) {
-    // Reap all dead processes to avoid zombies
-    while (waitpid(-1, NULL, WNOHANG) > 0);
+// Function to save history to file
+void save_history() {
+    FILE *file = fopen(HISTORY_FILE, "w");
+    if (!file) {
+        perror("fopen");
+        return;
+    }
+    HIST_ENTRY **the_history_list = history_list();
+    if (the_history_list) {
+        for (int i = 0; the_history_list[i]; i++) {
+            fprintf(file, "%s\n", the_history_list[i]->line);
+        }
+    }
+    fclose(file);
+}
+
+// Function to load history from file
+void load_history() {
+    FILE *file = fopen(HISTORY_FILE, "r");
+    if (!file) return;
+    char *line = NULL;
+    size_t len = 0;
+    while (getline(&line, &len, file) != -1) {
+        line[strcspn(line, "\n")] = 0;  // Remove newline
+        add_history(line);
+    }
+    free(line);
+    fclose(file);
+}
+
+// Function to get the nth command from history
+char *get_history_command(int index) {
+    HIST_ENTRY **the_history_list = history_list();
+    int history_count = history_length;
+    if (index < 0) {
+        index = history_count + index;
+    } else {
+        index -= 1;
+    }
+    return (index >= 0 && index < history_count) ? the_history_list[index]->line : NULL;
 }
 
 int main() {
-    char cmd[MAX_CMD_LEN];
-    char *args[MAX_ARGS];
-    pid_t pid;
-    int background;
+    // Load history from file
+    using_history();
+    load_history();
 
-    // Set up signal handler for SIGCHLD
-    struct sigaction sa;
-    sa.sa_handler = sigchld_handler;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_RESTART | SA_NOCLDSTOP;
-    sigaction(SIGCHLD, &sa, NULL);
-
-    while (1) {
-        printf("PUCITshell@%s:- ", getcwd(NULL, 0));
-        fflush(stdout);
-
-        // Read command
-        if (!fgets(cmd, MAX_CMD_LEN, stdin)) {
-            break; // Exit on EOF
-        }
-
-        // Remove trailing newline
-        cmd[strcspn(cmd, "\n")] = 0;
-
-        // Check for background execution
-        background = 0;
-        if (cmd[strlen(cmd) - 1] == '&') {
-            background = 1;
-            cmd[strlen(cmd) - 1] = 0; // Remove '&'
-        }
-
-        // Tokenize the command
-        char *token = strtok(cmd, " ");
-        int i = 0;
-        while (token != NULL && i < MAX_ARGS - 1) {
-            args[i++] = token;
-            token = strtok(NULL, " ");
-        }
-        args[i] = NULL; // Null-terminate the argument list
-
-        // Fork a child process
-        pid = fork();
-        if (pid == 0) {
-            // Child process
-            if (execvp(args[0], args) == -1) {
-                perror("Error executing command");
+    char *input;
+    while ((input = readline("shell> ")) != NULL) {
+        if (strlen(input) > 0) {
+            add_history(input);  // Add to history
+            if (history_length > MAX_HISTORY_SIZE) {
+                remove_history(0);  // Remove oldest command
             }
-            exit(EXIT_FAILURE); // Exit if exec fails
-        } else if (pid < 0) {
-            perror("Fork failed");
-        } else {
-            // Parent process
-            if (!background) {
-                // Wait for foreground process to finish
-                waitpid(pid, NULL, 0);
+        }
+
+        // Check for "!" command for history recall
+        if (input[0] == '!') {
+            int command_number;
+            if (sscanf(input + 1, "%d", &command_number) == 1) {
+                char *command = get_history_command(command_number);
+                if (command) {
+                    printf("Repeating command: %s\n", command);
+                    system(command);
+                } else {
+                    printf("No such command in history.\n");
+                }
             } else {
-                // Print background job info
-                printf("[%d] %d\n", i, pid);
+                printf("Invalid command syntax.\n");
             }
+        } else if (strcmp(input, "exit") == 0) {
+            free(input);
+            break;
+        } else {
+            // Execute the entered command
+            system(input);
         }
+
+        free(input);
     }
 
+    // Save history and cleanup
+    save_history();
+    clear_history();
     return 0;
 }
