@@ -9,6 +9,23 @@
 #define MAX_JOBS 100          
 #define MAX_CMD_LENGTH 1024   
 
+// Function to change the current working directory
+void change_directory(char *path) {
+    if (chdir(path) != 0) {
+        perror("cd failed");  
+    }
+}
+
+// Function to print help for built-in commands
+void help_commands() {
+    printf("Available built-in commands:\n");
+    printf("cd <path> - Change the current directory to <path>\n");
+    printf("exit - Exit the shell\n");
+    printf("jobs - List background jobs\n");
+    printf("kill <job_index> - Kill the job at <job_index>\n");
+    printf("help - List available commands\n");
+}
+
 int main() {
     char command[MAX_CMD_LENGTH]; // Buffer for user input
     char *args[100]; // Array to store command arguments
@@ -39,3 +56,4 @@ int main() {
     }
 
     return 0; // Return success
+}
