@@ -36,3 +36,11 @@ void set_variable(const char *name, const char *value, int is_global) {
         printf("Error: Maximum number of variables reached.\n");
     }
 }
+const char *get_variable(const char *name) {
+    for (int i = 0; i < var_count; i++) {
+        if (strncmp(variables[i].str, name, strlen(name)) == 0) {
+            return strchr(variables[i].str, '=') + 1; // Return the value part
+        }
+    }
+    return NULL; // Variable not found
+}
