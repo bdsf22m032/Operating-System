@@ -2,34 +2,32 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_VARS 100  // Maximum number of variables
-
+#define MAX_VARS 100  
 // Define the structure for variables
 struct var {
-    char *str;   // name=value string
-    int global;  // 1 for environment variable, 0 for local variable
+    char *str;   
+    int global; 
 };
 
 // Global variable array
 struct var variables[MAX_VARS];
-int var_count = 0;  // Count of current variables
+int var_count = 0;  
 
 // Function to add or update a variable
 void set_variable(const char *name, const char *value, int is_global) {
-    char *var_string = malloc(strlen(name) + strlen(value) + 2); // Allocate space for name=value string
+    char *var_string = malloc(strlen(name) + strlen(value) + 2); /
     if (!var_string) {
         printf("Memory allocation error\n");
         return;
     }
-    sprintf(var_string, "%s=%s", name, value); // Create name=value string
-
+    sprintf(var_string, "%s=%s", name, value); 
     // Check if the variable already exists
     for (int i = 0; i < var_count; i++) {
         if (strncmp(variables[i].str, name, strlen(name)) == 0 && variables[i].str[strlen(name)] == '=') {
-            // Variable exists, update it
-            free(variables[i].str); // Free the old string
-            variables[i].str = var_string; // Update with the new string
-            variables[i].global = is_global; // Update global flag
+          
+            free(variables[i].str); 
+            variables[i].str = var_string;
+            variables[i].global = is_global; 
             return;
         }
     }
@@ -41,7 +39,7 @@ void set_variable(const char *name, const char *value, int is_global) {
         var_count++;
     } else {
         printf("Error: Maximum number of variables reached.\n");
-        free(var_string); // Free allocated memory if not used
+        free(var_string); 
     }
 }
 
@@ -49,10 +47,10 @@ void set_variable(const char *name, const char *value, int is_global) {
 const char *get_variable(const char *name) {
     for (int i = 0; i < var_count; i++) {
         if (strncmp(variables[i].str, name, strlen(name)) == 0 && variables[i].str[strlen(name)] == '=') {
-            return strchr(variables[i].str, '=') + 1; // Return the value part
+            return strchr(variables[i].str, '=') + 1; 
         }
     }
-    return NULL; // Variable not found
+    return NULL; 
 }
 
 // Function to list all variables
