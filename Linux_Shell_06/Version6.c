@@ -44,3 +44,8 @@ const char *get_variable(const char *name) {
     }
     return NULL; // Variable not found
 }
+void list_variables() {
+    for (int i = 0; i < var_count; i++) {
+        printf("%s (%s)\n", variables[i].str, variables[i].global ? "global" : "local");
+    }
+}
