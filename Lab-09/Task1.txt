@@ -1,0 +1,150 @@
+Q N0 : 01))
+
+Spinning Disk (HDD):
+          It uses magnetic platters to store data, with a moving read-write head.
+It performannce is low due to mechanical parts.It cost per GB is less than SSD and provide more storage facility with minimum price.It produces heat and noise due to moving of mechanical parts inside it.
+
+Solid State Disk (SSD):
+	   IT stores data on flash memory chips, with no moving parts thats why it is working faster than HDD because of having no mechanical parts.It is costly per GB than HDD but is more durable and use less power and operates silently.
+
+
+Q NO : 02))
+
+Logical Block Addressing (LBA): 
+	   LBA is a way in which computers organize and access data on a hard disk. Instead of using the physical layout of the disk like cylinders, heads, and sectors.LBA gives each data block a unique number which makes it easier to manage data without worrying about the hardware structure.
+
+24 bit LBA -----> 2^24 blocks  and maximum size is (2^24 * 512 bytes) about 8.4 GB
+28 bit LBA -----> 2^28 blocks  and maximum size is (2^28 * 512 bytes) about 137 GB
+
+
+
+Q N0 : 03))
+
+Hard Disk Interface :
+		It is the connection between a hard disk drive and a computer motherboard. It acts as a communication bridge that transferring the data back and forth between the storage device and the system. 
+
+Imporatant Features of HDD interfaces:
+
+1 : ATA/IDE/PATA (Parallel ATA) :
+		Speed: Up to 133 MB/s.
+		Size: Bulky ribbon cables (40 cm)
+		Pins : 40 on connector
+		Connections: Supports up to 2 devices per cable.
+		Hot-Pluggable: No.
+
+2: SATA (Serial ATA):
+		Speed: Up to 6 Gbps
+		Size: Slim cables for better airflow (1-m)
+		Pins: 7 pins for data and 15 pins for power
+		Connections: One device per port
+		Hot-Pluggable: Yes
+3: SCSI (Small Computer System Interface):
+		Speed: Up to 640 MB/s 
+		Size: Moderately large cables.(6-m)
+		Pins: 50, 68, or 80 pins 
+		Connections: up to 1
+		Hot-Pluggable: Yes
+
+
+Q NO : 04))
+
+CHS stands for Cylinders, Heads, and Sectors, which are used to organize and locate data on older hard disks
+
+Reading:
+	The computer sends a request with the cylinder, head, and sector where the data is stored.
+	The disk arm moves to the correct cylinder or track.
+	The head reads data from the correct sector as the disk rotates.
+Writing:
+	The arm moves to the correct cylinder.
+	The head writes data to the specified sector.
+
+Seek Time :
+	The time takes by the disk arm to move to the correct cylinder.
+
+Rotational Delay:
+	The time it takes for the disk to spin and align the correct sector under the read/write head.
+
+
+How CHS Mapping to LBA Reduces Seek Time ?
+	      In CHS the system finds data by moving the disk arm to the right cylinder and waiting for the sector to spin under the head, which takes time. LBA  simplifies this by assigning each block a unique number, so the system doesn’t need to calculate specific cylinder, head, or sector positions. This makes data access faster by reducing both seek time and rotational delay.
+
+
+
+Linux
+
+Partition Type Number: 83
+Used for standard Linux file systems (e.g., ext4, ext3).
+Windows NTFS
+
+Partition Type Number: 07
+Used for Windows operating systems, especially for NTFS file systems.
+Linux Swap
+
+Partition Type Number: 82
+Used for swap partitions in Linux systems, which act as virtual memory.
+FAT32
+
+Partition Type Number: 0B
+Used for partitions formatted with the FAT32 file system, commonly used in removable media and older Windows systems.
+EFI System Partition (ESP)
+
+Partition Type Number: EF
+Used in UEFI-based systems to store boot-related files.
+
+File System:
+A file system is a method for storing, organizing, and managing files on a storage device, allowing users and programs to retrieve, update, or delete data.
+
+Journaling File System:
+A journaling file system logs changes to files and directories before they are made, ensuring quick recovery and consistency after crashes or power failures.
+
+Functionalities of a Good File System:
+Data Storage and Retrieval
+File Management
+Security and Access Control
+Reliability
+Efficiency
+Consistency
+Support for Large Files and Volumes
+Scalability
+
+
+
+ maximum file size and maximum partition size for the specified file systems:
+
+1. ext3:
+Maximum File Size: 2 TiB (Tebibytes)
+Maximum Partition Size: 16 TiB
+2. ext4:
+Maximum File Size: 16 TiB
+Maximum Partition Size: 1 EiB (Exbibyte)
+3. VFAT:
+Maximum File Size: 4 GiB - 1 Byte
+Maximum Partition Size: 2 GiB (for FAT16), 32 GiB (for FAT32)
+4. NTFS:
+Maximum File Size: 16 TiB
+Maximum Partition Size: 256 TiB
+5. ZFS:
+Maximum File Size: 16 EiB
+
+Maximum Partition Size: 256 ZiB (Zebibytes)
+
+
+
+
+File System	Maximum File Size	Maximum Partition Size
+ext3	2 TiB	16 TiB
+ext4	16 TiB	1 EiB
+VFAT	4 GiB - 1 Byte	32 GiB (FAT32)
+NTFS	16 TiB	256 TiB
+ZFS
+
+
+Here is the information in a table format:
+
+| **File System** | **Maximum File Size** | **Maximum Partition Size** |
+|-----------------|-----------------------|----------------------------|
+| **ext3**        | 2 TiB                 | 16 TiB                     |
+| **ext4**        | 16 TiB                | 1 EiB                      |
+| **VFAT**        | 4 GiB - 1 Byte        | 32 GiB (FAT32)             |
+| **NTFS**        | 16 TiB                | 256 TiB                    |
+| **ZFS**         | 16 EiB                | 256 ZiB                    |

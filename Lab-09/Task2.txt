@@ -1,0 +1,24 @@
+Q NO 01)):
+
+Five Advantages of Partitioning the Hard Disk:
+
+1.Better Organization
+2.Improved Performance
+3.Data Safety
+4.Multiple Operating Systems
+5.Easier Backup
+
+
+
+Q NO 02)):
+Primary Partition:
+		A primary partition is one of the main divisions on a hard disk. You can have up to four primary partitions on a disk. It is bootable, meaning the computer can start from it.
+
+Logical Partition:
+		A logical partition is created within an extended partition.You can have many logical partitions, and they are often used when you need more than four partitions on a disk. Logical partitions cannot be booted directly.
+
+
+Q N0 03 )) :
+
+Partition Table
+		A partition table is a data structure on a hard disk that contains information about the partitions on the disk. It tells the operating system where each partition begins and ends, along with other information such as the partition type and boot information.
